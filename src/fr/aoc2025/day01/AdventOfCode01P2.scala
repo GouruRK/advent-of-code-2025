@@ -54,5 +54,4 @@ object AdventOfCode01P2 {
       }
     }
   }
-  // 6014 too high
 }
