@@ -17,25 +17,22 @@ object AdventOfCode01P1 {
     L1
     L99
     R14
-    L82""".stripMargin.stripIndent.stripLeading.stripTrailing
+    L82""".stripIndent.stripLeading
 
   private def solve(input: String): Unit = {
-    println(solve(input.split("\n").toList, 50, 0))
+    println(solve(input.split("\n").map {
+      case s"L$n" => -n.toInt
+      case s"R$n" => n.toInt
+    }.toList, 50, 0))
   }
 
   @tailrec
-  private def solve(lines: List[String], current: Int, acc: Int): Int = {
+  private def solve(lines: List[Int], current: Int, acc: Int): Int = {
     lines match {
       case Nil => acc
-      case line::others =>
-        line match {
-          case s"L$n" =>
-            val next = (current - n.toInt) % 100
-            solve(others, next, acc + (if (next == 0) 1 else 0))
-          case s"R$n" =>
-            val next = (current + n.toInt) % 100
-            solve(others, next, acc + (if (next == 0) 1 else 0))
-        }
+      case n::others =>
+        val next = (current - n) % 100
+        solve(others, next, acc + (if (next == 0) 1 else 0))
     }
   }
 
