@@ -9,13 +9,9 @@ object AdventOfCode02P01 {
   private case class Interval(left: Long, right: Long) {
   }
 
-  private val EXAMPLE : String = """
-    11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124"""
-    .stripMargin.stripIndent.stripLeading
-
-  private def solve(input: String): Unit = {
+  private def solve(input: String): Long = {
     val intervals = input.split(",").map(_.split("-").map(_.toLong)).map(x => Interval(x(0), x(1))).toList
-    println(solve(intervals, 0))
+    solve(intervals, 0)
   }
 
   private def findNextEvenLengthNumber(n: Long): Long = {
@@ -39,14 +35,15 @@ object AdventOfCode02P01 {
     }
   }
 
+  private def solveWithFile(filename: String): Long = {
+    Using(Source.fromFile(filename)) { fd =>
+      solve(fd.mkString.stripTrailing)
+    }.get
+  }
+
   def main(args: Array[String]) : Unit = {
-    if (args.isEmpty) {
-      solve(EXAMPLE)
-    } else {
-      Using(Source.fromFile(args.apply(0))) { fd =>
-        solve(fd.mkString.stripTrailing)
-      }
-    }
+    println("Example: " + solveWithFile("inputs/day02-example.txt"))
+    println("Problem: " + solveWithFile("inputs/day02.txt"))
   }
 
 }

@@ -1,29 +1,16 @@
 package fr.aoc2025.day01
 
-import java.util
 import scala.annotation.tailrec
 import scala.io.Source
 import scala.util.Using
 
 object AdventOfCode01P1 {
 
-  private val EXAMPLE : String = """
-    L68
-    L30
-    R48
-    L5
-    R60
-    L55
-    L1
-    L99
-    R14
-    L82""".stripIndent.stripLeading
-
-  private def solve(input: String): Unit = {
-    println(solve(input.split("\n").map {
+  private def solve(input: String): Int = {
+    solve(input.split("\n").map { _.strip } .map {
       case s"L$n" => -n.toInt
       case s"R$n" => n.toInt
-    }.toList, 50, 0))
+    }.toList, 50, 0)
   }
 
   @tailrec
@@ -36,14 +23,15 @@ object AdventOfCode01P1 {
     }
   }
 
+  private def solveWithFile(filename: String): Long = {
+    Using(Source.fromFile(filename)) { fd =>
+      solve(fd.mkString.stripTrailing)
+    }.get
+  }
+
   def main(args: Array[String]) : Unit = {
-    if (args.isEmpty) {
-      solve(EXAMPLE)
-    } else {
-      Using(Source.fromFile(args.apply(0))) { fd =>
-        solve(fd.mkString)
-      }
-    }
+    println("Example: " + solveWithFile("inputs/day01-example.txt"))
+    println("Problem: " + solveWithFile("inputs/day01.txt"))
   }
 
 }
