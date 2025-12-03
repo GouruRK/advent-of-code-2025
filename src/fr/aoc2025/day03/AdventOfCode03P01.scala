@@ -28,15 +28,10 @@ object AdventOfCode03P01 {
       case Nil => acc
       case bank::others =>
         val (a, i) = indexOfMax(bank)
-        if (i == bank.size - 1) {
-          val subList = bank.slice(0, i)
-          val (b, j) = indexOfMax(subList)
-          solve(others, acc + b*10 + a)
-        } else {
-          val subList = bank.slice(i + 1, bank.size)
-          val (b, j) = indexOfMax(subList)
-          solve(others, acc + a*10 + b)
-        }
+        val (subList, compute) = if (i == bank.size - 1) (bank.slice(0, i), (b: Int) => b*10 + a)
+            else (bank.slice(i + 1, bank.size), (b: Int) => a*10 + b)
+        val (b, _) = indexOfMax(subList)
+        solve(others, acc + compute(b))
     }
   }
 
