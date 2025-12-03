@@ -12,14 +12,14 @@ object AdventOfCode03P01 {
 
   private def indexOfMax(list : List[Int]) : (Int, Int) = {
     @tailrec
-    def indexOfMax(l: List[(Int, Int)], maxElement: Int, maxIndex: Int): (Int, Int) = {
+    def indexOfMax(l: List[(Int, Int)], maxElement: Int = -1, maxIndex: Int = -1): (Int, Int) = {
       l match {
         case Nil => (maxElement, maxIndex)
         case (a, _)::others if a <= maxElement => indexOfMax(others, maxElement, maxIndex)
         case (a, i)::others => indexOfMax(others, a, i)
       }
     }
-    indexOfMax(list.zipWithIndex, -1, -1)
+    indexOfMax(list.zipWithIndex)
   }
 
   @tailrec
@@ -27,9 +27,13 @@ object AdventOfCode03P01 {
     banks match {
       case Nil => acc
       case bank::others =>
+        // shorter alternative: n at last index is always a unit !
+        // val (a, i) = indexOfMax(bank.slice(0, bank.size - 1))
+        // val (b, _) = indexOfMax(bank.slice(i + 1, bank.size))
+        // solve(others, acc + a*10 + b)
         val (a, i) = indexOfMax(bank)
         val (subList, compute) = if (i == bank.size - 1) (bank.slice(0, i), (b: Int) => b*10 + a)
-            else (bank.slice(i + 1, bank.size), (b: Int) => a*10 + b)
+          else (bank.slice(i + 1, bank.size), (b: Int) => a*10 + b)
         val (b, _) = indexOfMax(subList)
         solve(others, acc + compute(b))
     }
