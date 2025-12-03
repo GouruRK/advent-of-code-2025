@@ -6,25 +6,20 @@ import scala.util.Using
 
 object AdventOfCode02P01 {
 
-  private case class Interval(left: Long, right: Long) {
-  }
-
   private def solve(input: String): Long = {
-    val intervals = input.split(",").map(_.split("-").map(_.toLong)).map(x => Interval(x(0), x(1))).toList
+    val intervals = input.split(",").map(_.split("-").map(_.toLong)).toList
     solve(intervals, 0)
   }
 
-  private def findNextEvenLengthNumber(n: Long): Long = {
-    val len = n.toString.length
-    if (len % 2 == 0) n else Math.pow(10, len).toLong
-  }
+  private def findNextEvenLengthNumber(n: String): String =
+    if (n.length % 2 == 0) n else Math.pow(10, n.length).toString
 
   @tailrec
-  private def solve(intervals: List[Interval], acc: Long): Long = {
+  private def solve(intervals: List[Array[Long]], acc: Long): Long = {
     intervals match {
       case Nil => acc
-      case Interval(left, right)::others =>
-        val current = findNextEvenLengthNumber(left).toString
+      case Array(left, right)::others =>
+        val current = findNextEvenLengthNumber(left.toString)
         val (firstHalf, _) = current.splitAt(current.length / 2)
         val n = Iterator.iterate(firstHalf.toLong){_ + 1}
           .map(x => (x.toString * 2).toLong)
