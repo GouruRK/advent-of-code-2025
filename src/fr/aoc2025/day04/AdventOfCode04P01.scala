@@ -21,7 +21,7 @@ object AdventOfCode04P01 {
       coord match {
         case (x, _) if x < 0 || x >= width => EMPTY
         case (_, y) if y < 0 || y >= height => EMPTY
-        case (x, y) => grid(x)(y)
+        case (x, y) => grid(y)(x)
       }
     }
   }
