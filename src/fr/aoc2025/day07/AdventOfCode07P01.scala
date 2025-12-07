@@ -1,7 +1,5 @@
 package fr.aoc2025.day07
 
-import .solve
-
 import scala.annotation.tailrec
 import scala.io.Source
 import scala.util.Using
